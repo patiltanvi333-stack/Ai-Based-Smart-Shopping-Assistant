@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Shopping AI</title>
+
+<style>
+:root {
+  --primary: #6c5ce7;
+  --dark: #20213a;
+  --bg: #f5f6fc;
+  --green: #15966a;
+  --muted: #73758b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+}
+
+header {
+  background: white;
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 12px #00000008;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  color: var(--primary);
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.cart {
+  background: #eeeaff;
+  color: var(--primary);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.hero {
+  padding: 55px 7%;
+  background: linear-gradient(120deg, #292448, #6654ce);
+  color: white;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 48px);
+  margin-bottom: 15px;
+}
+
+.hero p {
+  max-width: 650px;
+  color: #e6e2ff;
+  line-height: 1.7;
+}
+
+.hero-tag {
+  display: inline-block;
+  padding: 8px 13px;
+  border-radius: 20px;
+  background: #ffffff20;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+main {
+  max-width: 1250px;
+  padding: 35px 22px;
+  margin: auto;
+}
+
+h2 {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.panel {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 28px;
+  box-shadow: 0 5px 25px #28205008;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  margin-top: 20px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #e1e2ee;
+  border-radius: 10px;
+  font-size: 14px;
+  background: white;
+  color: var(--dark);
+}
+
+input:focus, select:focus {
+  outline: 2px solid #c7bfff;
+  border-color: var(--primary);
+}
+
+button {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.88;
+}
+
+.primary-btn {
+  border: none;
+  padding: 13px 20px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logic-box {
+  background: #f5f3ff;
+  border: 1px solid #e5e0ff;
+  border-radius: 13px;
+  padding: 18px;
+  margin-top: 20px;
+}
+
+.logic-box h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.formula {
+  color: #5141bc;
+  font-weight: bold;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.logic-explanation {
+  color: #66617e;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.status {
+  padding: 13px 15px;
+  border-radius: 10px;
+  background: #e8f8f0;
+  color: #08794c;
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.product {
+  background: white;
+  border-radius: 16px;
+  padding: 17px;
+  box-shadow: 0 5px 25px #28205008;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.product-icon {
+  height: 145px;
+  display: grid;
+  place-items: center;
+  background: #f5f3ff;
+  border-radius: 12px;
+  font-size: 65px;
+  margin-bottom: 15px;
+}
+
+.product h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.category {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.price-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.old-price {
+  color: #9696a6;
+  text-decoration: line-through;
+  font-size: 13px;
+}
+
+.discount {
+  color: #118356;
+  background: #e5f8ee;
+  border-radius: 5px;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.rating {
+  font-size: 13px;
+  color: #a16b00;
+  margin-bottom: 15px;
+}
+
+.recommendation {
+  padding: 9px;
+  background: #edf9f3;
+  color: #08794c;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 13px;
+}
+
+.not-recommended {
+  padding: 9px;
+  background: #f5f5f9;
+  color: #65667a;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 13px;
+}
+
+.product .primary-btn {
+  margin-top: auto;
+  width: 100%;
+}
+
+.secondary-btn {
+  background: white;
+  border: 1px solid #dcd8f8;
+  color: var(--primary);
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-weight: bold;
+}
+
+.empty {
+  background: white;
+  border-radius: 15px;
+  padding: 35px 20px;
+  text-align: center;
+  color: var(--muted);
+  grid-column: 1 / -1;
+  line-height: 1.8;
+}
+
+.cart-list {
+  margin-top: 15px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid #eeeef4;
+}
+
+.cart-item p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.remove-btn {
+  color: #d14b5a;
+  background: #fff0f1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media (max-width: 950px) {
+  .products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  header {
+    padding: 16px;
+  }
+  .hero {
+    padding: 38px 22px;
+  }
+  main {
+    padding: 25px 14px;
+  }
+  .products {
+    grid-template-columns: 1fr;
+  }
+  .controls {
+    grid-template-columns: 1fr;
+  }
+  .product-icon {
+    height: 170px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ SmartShop AI</div>
+  <button class="cart" onclick="showCart()">
+    🛒 Cart (<span id="cartCount">0</span>)
+  </button>
+</header>
+
+<section class="hero">
+  <div class="hero-tag">AI + PROPOSITIONAL LOGIC</div>
+  <h1>Shop smarter.<br>Spend better.</h1>
+  <p>
+    Find products that match your budget and preferences.
+    Our rule-based recommendation engine uses propositional
+    logic to identify suitable shopping choices.
+  </p>
+</section>
+
+<main>
+
+  <section class="panel">
+    <h2>🎯 Smart Shopping Assistant</h2>
+    <p class="subtitle">
+      Enter your preferences and let the rule-based AI recommend products.
+    </p>
+
+    <div class="controls">
+      <div class="field">
+        <label for="budget">Maximum budget (₹)</label>
+        <input id="budget" type="number" min="0"
+               value="50000" placeholder="Enter budget">
+      </div>
+
+      <div class="field">
+        <label for="category">Product category</label>
+        <select id="category">
+          <option value="All">All categories</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Home">Home & Living</option>
+          <option value="Accessories">Accessories</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="search">Search products</label>
+        <input id="search" type="text"
+               placeholder="e.g. headphones">
+      </div>
+
+      <div class="field">
+        <label for="priority">Recommendation priority</label>
+        <select id="priority">
+          <option value="balanced">Balanced: rating or discount</option>
+          <option value="rating">High rating only</option>
+          <option value="discount">High discount only</option>
+          <option value="both">High rating and discount</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="minRating">Minimum rating</label>
+        <select id="minRating">
+          <option value="3">3 stars and above</option>
+          <option value="4" selected>4 stars and above</option>
+          <option value="4.5">4.5 stars and above</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="minDiscount">Minimum discount</label>
+        <select id="minDiscount">
+          <option value="0">Any discount</option>
+          <option value="10" selected>10% and above</option>
+          <option value="20">20% and above</option>
+          <option value="30">30% and above</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="logic-box">
+      <h3>🧠 Propositional Logic Engine</h3>
+      <div class="formula">
+        P = B ∧ C ∧ (R ∨ D)
+      </div>
+      <p class="logic-explanation">
+        B = Product is within budget<br>
+        C = Product matches the selected category and search<br>
+        R = Product meets the rating and discount-independent rating threshold<br>
+        D = Product meets the minimum discount<br><br>
+        ∧ means AND · ∨ means OR · P = Product is recommended
+      </p>
+      <div id="logicStatus" class="status" aria-live="polite">
+        Ready to evaluate shopping rules.
+      </div>
+    </div>
+
+    <button class="primary-btn"
+            style="margin-top:20px"
+            onclick="recommend()">
+      ✨ Find Smart Recommendations
+    </button>
+
+    <button class="secondary-btn"
+            style="margin:20px 0 0 8px"
+            onclick="resetFilters()">
+      Reset filters
+    </button>
+  </section>
+
+  <section id="productsSection">
+    <div class="section-head">
+      <div>
+        <h2>🛍️ Product Collection</h2>
+        <p class="subtitle" style="margin:8px 0 0">
+          Explore products and compare prices.
+        </p>
+      </div>
+      <span class="count" id="productCount"></span>
+    </div>
+
+    <div class="products" id="products"></div>
+  </section>
+
+  <section class="panel" id="cartSection" style="margin-top:35px">
+    <h2>🛒 Your Shopping Cart</h2>
+    <p class="subtitle">
+      Review selected products and calculate your total.
+    </p>
+
+    <div id="cartItems" class="cart-list"></div>
+
+    <div class="total">
+      <span>Total</span>
+      <span id="cartTotal">₹0</span>
+    </div>
+
+    <p id="budgetStatus" class="logic-explanation"
+       style="margin-top:12px"></p>
+
+    <button class="primary-btn"
+            style="margin-top:20px"
+            onclick="checkout()">
+      Confirm Shopping List
+    </button>
+  </section>
+
+  <section class="panel">
+    <h2>📘 Assignment: Logic Rules</h2>
+    <p class="subtitle">
+      This project demonstrates how propositional logic can
+      support automated shopping recommendations.
+    </p>
+
+    <div class="logic-box">
+      <h3>Rule 1: Budget constraint</h3>
+      <p class="logic-explanation">
+        B = (Product price ≤ User budget)
+      </p>
+    </div>
+
+    <div class="logic-box">
+      <h3>Rule 2: Category and search match</h3>
+      <p class="logic-explanation">
+        C = (Category matches) ∧ (Search matches)
+      </p>
+    </div>
+
+    <div class="logic-box">
+      <h3>Rule 3: Product quality or discount</h3>
+      <p class="logic-explanation">
+        Q = R ∨ D<br>
+        A product qualifies when its rating meets the selected
+        threshold or its discount meets the selected threshold.
+      </p>
+    </div>
+
+    <div class="logic-box">
+      <h3>Final recommendation rule</h3>
+      <p class="formula">
+        P = B ∧ C ∧ Q
+      </p>
+      <p class="logic-explanation">
+        The system recommends a product when all mandatory
+        conditions are true and the selected quality rule is satisfied.
+        The priority selector can change Q to R, D, or R ∧ D.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  SmartShop AI · Academic Mini Project · Artificial Intelligence
+  using Propositional Logic
+</footer>
+
+<script>
+const products
